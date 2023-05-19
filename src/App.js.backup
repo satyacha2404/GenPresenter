@@ -1,0 +1,55 @@
+import './App.css';
+import axios from 'axios';
+import React from "react";
+import Webcam from 'react-webcam';
+
+function App() {
+  const [post, setPost] = React.useState(null);
+  var url = 'http://localhost:8000/talks/tlk_fm6zbRCsxfNrs1Ldsl-8H';
+  var basicAuth = 'Basic c2F0eWEuY2hhbmRyYS5hbDFAb3V0bG9vay5jb20:Q4Wf7d8C8drR2Ou8CVkgP';
+  var src = "https://d-id-talks-prod.s3.us-west-2.amazonaws.com/auth0%7C645b9c1d0743716e603ff716/tlk_glWCJw4RqYRTA1Y6GVCbU/1684288220665.mp4?AWSAccessKeyId=AKIA5CUMPJBIK65W6FGA&Expires=1684374624&Signature=9w4Z9%2F1WMbrFd2avZ9xSdAHI154%3D&X-Amzn-Trace-Id=Root%3D1-646432e0-04e04ac92d2c37e83a34fbc6%3BParent%3D99d516f4363a230c%3BSampled%3D1%3BLineage%3D6b931dd4%3A0";
+
+  React.useEffect(() => {
+    axios.get(url, {
+      headers: { 'Authorization': basicAuth }
+    },
+    ).then(function(response) {
+      console.log('Authenticated');
+      setPost(response.data);
+    }).catch(function(error) {
+      console.log('Error on Authentication');
+    });    
+  }, []);
+
+  const webcamRef = React.useRef(null);
+  const [imgSrc, setImgSrc] = React.useState(null);
+
+
+  const capture = React.useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    console.log(imageSrc.split(',')[1]);
+    setImgSrc(imageSrc);
+  }, [webcamRef, setImgSrc]);
+
+  return (
+     
+    <div className="App">
+      <Webcam
+        audio={false}
+        ref={webcamRef}
+        screenshotFormat="image/jpeg"
+      />
+      <button onClick={capture}>Capture photo</button>
+      {imgSrc && (
+        <img
+          src={imgSrc}
+        />
+      )}
+ <video controls width="50%" autoPlay={true}>
+      <source src={src} type="video/mp4" />
+      Sorry, your browser doesn't support embedded videos.
+    </video>    </div>
+  );
+}
+
+export default App;
