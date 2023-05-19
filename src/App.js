@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useRef } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -28,7 +27,6 @@ function App({formik}) {
   
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
-    console.log(imageSrc.split(',')[1]);
     formik.setFieldValue("picture", imageSrc.split(',')[1]);
   }, [webcamRef]);
   
@@ -37,13 +35,13 @@ function App({formik}) {
       <div> 
         <Box sx={{ flexGrow: 11 }}>
           <AppBar position="static">
-            <Toolbar style={{backgroundColor: "#00a758", fontSize: 40, height: 100, fontWeight: 'bold'}}>
+            <Toolbar style={{backgroundColor: "#00a758", fontSize: 40, height: 80, fontWeight: 'bold'}}>
               Go Presenter
             </Toolbar>
           </AppBar>
-          <Card style={{backgroundColor: "#00a758", height: window.innerHeight - 100}}>
+          <Card style={{backgroundColor: "#00a758", height: window.innerHeight - 80}}>
             <CardContent>
-              <Box sx={{ m: 10 }} /> 
+              <Box sx={{ m: 7 }} /> 
               <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={10}>
                   <Grid item xs={2} md={2}>
@@ -114,16 +112,17 @@ function App({formik}) {
                       <Stack direction="column" spacing={2}>
                         {
                           formik.values.video ?
-                            <video controls autoPlay={true}>
+                            <video controls autoPlay={true} style={{height: 470}}>
                               <source src={formik.values.video} type="video/mp4" />
                                 Sorry, your browser doesn't support embedded videos.
                             </video>    :
                             formik.values.picture ?
-                            <img src={"data:image/jpeg;base64," + formik.values.picture} />                            :
+                            <img style={{height: 470}} src={"data:image/jpeg;base64," + formik.values.picture} />                            :
                             <Webcam
                               audio={false}
                               ref={webcamRef}
                               screenshotFormat="image/jpeg"
+                              height="470"
                             />                    
                         }
                         <Button type='submit' variant="contained" endIcon={<VideoLibraryIcon />}>
