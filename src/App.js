@@ -92,6 +92,16 @@ function App({formik}) {
                         onChange={formik.handleChange}
                         value={formik.values.domisili}
                       />
+                      <TextField 
+                        fullWidth 
+                        label="Bahasa" 
+                        variant="outlined"
+                        disabled 
+                        width="100%" 
+                        name="bahasa"
+                        helperText=" "
+                        value={formik.values.language}
+                      /> 
                       <Stack spacing={2}>
                         <Button onClick={capture} variant="contained" endIcon={<CameraAlt />}>
                           Take Photo
