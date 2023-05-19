@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { CameraAlt } from '@mui/icons-material';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import Webcam from 'react-webcam';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -22,62 +23,114 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const src = "";
-
-function App() {
-  const windowSize = useRef([window.innerWidth, window.innerHeight]);
-
+function App({formik}) {
+  const webcamRef = React.useRef(null);
+  
+  const capture = React.useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    console.log(imageSrc.split(',')[1]);
+    formik.setFieldValue("picture", imageSrc.split(',')[1]);
+  }, [webcamRef]);
+  
   return (
-    <div> 
-      <Box sx={{ flexGrow: 11 }}>
-        <AppBar position="static">
-          <Toolbar style={{backgroundColor: "#00a758", fontSize: 40, height: 100, fontWeight: 'bold'}}>
-            Go Presenter
-          </Toolbar>
-        </AppBar>
-        <Card style={{backgroundColor: "#00a758", height: windowSize.current[1] - 100}}>
-          <CardContent>
-            <Box sx={{ m: 10 }} /> 
-            <Box sx={{ flexGrow: 1 }}>
-              <Grid container spacing={10}>
-                <Grid item xs={2} md={2}>
+    <form onSubmit={formik.handleSubmit}>
+      <div> 
+        <Box sx={{ flexGrow: 11 }}>
+          <AppBar position="static">
+            <Toolbar style={{backgroundColor: "#00a758", fontSize: 40, height: 100, fontWeight: 'bold'}}>
+              Go Presenter
+            </Toolbar>
+          </AppBar>
+          <Card style={{backgroundColor: "#00a758", height: window.innerHeight - 100}}>
+            <CardContent>
+              <Box sx={{ m: 10 }} /> 
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid container spacing={10}>
+                  <Grid item xs={2} md={2}>
+                  </Grid>
+                  <Grid item xs={3} md={3}>
+                    <Item style={{padding: 50, borderRadius: 50}}>
+                      <TextField 
+                        fullWidth 
+                        label="Nama" 
+                        variant="outlined" 
+                        width="100%" 
+                        name="name"
+                        helperText=" "
+                        onChange={formik.handleChange}
+                        value={formik.values.name}
+                      />
+                      <TextField 
+                        fullWidth 
+                        label="Jenis Kelamin" 
+                        variant="outlined" 
+                        width="100%" 
+                        name="gender"
+                        helperText=" "
+                        onChange={formik.handleChange}
+                        value={formik.values.gender}
+                      />
+                      <TextField 
+                        fullWidth 
+                        label="Tanggal Lahir" 
+                        variant="outlined" 
+                        width="100%" 
+                        name="birthDate"
+                        helperText=" "
+                        onChange={formik.handleChange}
+                        value={formik.values.birthDate}
+                      />
+                      <TextField 
+                        fullWidth 
+                        label="Domisili" 
+                        variant="outlined" 
+                        width="100%" 
+                        name="domisili"
+                        helperText=" "
+                        multiline
+                        rows={5}
+                        onChange={formik.handleChange}
+                        value={formik.values.domisili}
+                      />
+                      <Stack spacing={2}>
+                        <Button onClick={capture} variant="contained" endIcon={<CameraAlt />}>
+                          Take Photo
+                        </Button>
+                      </Stack>                    
+                    </Item>
+                  </Grid>
+                  <Grid item xs={6} md={6}>
+                    <Item style={{padding: 50, borderRadius: 50}}>
+                      <Stack direction="column" spacing={2}>
+                        {
+                          formik.values.video ?
+                            <video controls autoPlay={true}>
+                              <source src={formik.values.video} type="video/mp4" />
+                                Sorry, your browser doesn't support embedded videos.
+                            </video>    :
+                            formik.values.picture ?
+                            <img src={"data:image/jpeg;base64," + formik.values.picture} />                            :
+                            <Webcam
+                              audio={false}
+                              ref={webcamRef}
+                              screenshotFormat="image/jpeg"
+                            />                    
+                        }
+                        <Button type='submit' variant="contained" endIcon={<VideoLibraryIcon />}>
+                          Generate Video
+                        </Button>
+                      </Stack>                    
+                    </Item>
+                  </Grid>
+                  <Grid item xs={1} md={1}>
+                  </Grid>
                 </Grid>
-                <Grid item xs={3} md={3}>
-                  <Item style={{padding: 50, borderRadius: 50}}>
-                    <TextField fullWidth label="Nama" variant="outlined" width="100%" helperText=" "/>
-                    <TextField fullWidth label="Jenis Kelamin" variant="outlined" helperText=" "/>
-                    <TextField fullWidth label="Tanggal Lahir" variant="outlined" helperText=" "/>
-                    <TextField fullWidth label="Domisili" variant="outlined" helperText=" "
-                              multiline
-                              rows={5}/>
-                    <Stack spacing={2}>
-                      <Button variant="contained" endIcon={<CameraAlt />}>
-                        Take Photo
-                      </Button>
-                    </Stack>                    
-                  </Item>
-                </Grid>
-                <Grid item xs={6} md={6}>
-                  <Item style={{padding: 50, borderRadius: 50}}>
-                    <Stack direction="column" spacing={2}>
-                    <video controls autoPlay={true}>
-                      <source src={src} type="video/mp4" />
-                        Sorry, your browser doesn't support embedded videos.
-                      </video>    
-                      <Button variant="contained" endIcon={<VideoLibraryIcon />}>
-                        Generate Video
-                      </Button>
-                    </Stack>                    
-                  </Item>
-                </Grid>
-                <Grid item xs={1} md={1}>
-                </Grid>
-              </Grid>
-            </Box>         
-          </CardContent>
-        </Card>
-      </Box>
-    </div>
+              </Box>         
+            </CardContent>
+          </Card>
+        </Box>
+      </div>
+    </form>
   );
 }
 
