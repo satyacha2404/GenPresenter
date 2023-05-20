@@ -13,6 +13,10 @@ import Stack from '@mui/material/Stack';
 import { CameraAlt } from '@mui/icons-material';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import Webcam from 'react-webcam';
+import { InputLabel } from '@mui/material';
+import { Select } from '@mui/material';
+import { MenuItem } from '@mui/material';
+import { FormHelperText }  from '@mui/material';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -68,6 +72,19 @@ function App({formik}) {
                         onChange={formik.handleChange}
                         value={formik.values.gender}
                       />
+                      <Select
+                        fullWidth
+                        labelId="gender-select"
+                        id="gender-select"
+                        name="gender-select"
+                        value={formik.values.gender}
+                        label="Jenis Kelamin"
+                        onChange={formik.handleChange}
+                      >
+                        <MenuItem value={"L"}>Laki - laki</MenuItem>
+                        <MenuItem value={"P"}>Perempuan</MenuItem>
+                      </Select>  
+                      <FormHelperText> </FormHelperText>                    
                       <TextField 
                         fullWidth 
                         label="Tanggal Lahir" 

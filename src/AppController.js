@@ -19,10 +19,15 @@ function AppController() {
       var url = 'http://localhost:8000/api/generate-video';
       var body = JSON.stringify(values);      
 
+      console.log(JSON.stringify(values));
+
       axios.post(url, body, {headers: {
         'Content-Type': 'application/json',
       }})
-      .then(response => formik.setFieldValue("video", response.data.responseBody.urlVideo))
+      .then(function (response){
+        console.log(response.data)
+        formik.setFieldValue("video", response.data.responseBody.urlVideo)
+      })
       .catch(error => {
           console.error(error.message);
       });      
