@@ -62,7 +62,7 @@ function App({formik}) {
                         onChange={formik.handleChange}
                         value={formik.values.name}
                       />
-                      <TextField 
+                      {/* <TextField 
                         fullWidth 
                         label="Jenis Kelamin" 
                         variant="outlined" 
@@ -71,15 +71,18 @@ function App({formik}) {
                         helperText=" "
                         onChange={formik.handleChange}
                         value={formik.values.gender}
-                      />
+                      /> */}
                       <Select
                         fullWidth
                         labelId="gender-select"
                         id="gender-select"
                         name="gender-select"
+                        
                         value={formik.values.gender}
-                        label="Jenis Kelamin"
-                        onChange={formik.handleChange}
+                        label="Nama" 
+                        onChange={(event) => {
+                          formik.setFieldValue("gender", event.target.value);
+                        }}
                       >
                         <MenuItem value={"L"}>Laki - laki</MenuItem>
                         <MenuItem value={"P"}>Perempuan</MenuItem>
