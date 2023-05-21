@@ -13,7 +13,8 @@ function AppController() {
       domisili: "",
       picture: "",
       video: "",
-      language: "Bahasa Indonesia"
+      language: "Bahasa Indonesia",
+      presenterGender: ""
     },
     onSubmit: (values) => {
       var url = 'http://localhost:8000/api/generate-video';

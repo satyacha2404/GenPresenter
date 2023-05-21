@@ -17,6 +17,8 @@ import { InputLabel } from '@mui/material';
 import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { FormHelperText }  from '@mui/material';
+import logo from "./assets/Manulife-Logo.jpg";
+import { FormControl } from '@mui/material';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -40,7 +42,15 @@ function App({formik}) {
         <Box sx={{ flexGrow: 11 }}>
           <AppBar position="static">
             <Toolbar style={{backgroundColor: "#00a758", fontSize: 40, height: 80, fontWeight: 'bold'}}>
-              Go Presenter
+              <Grid container spacing={10}>
+                <Grid item xs={1} md={1}></Grid>
+                <Grid item xs={4} md={4}>Go Presenter</Grid>
+                <Grid item xs={2} md={2}></Grid>
+                <Grid item xs={4} md={4}>
+                  <img style={{height: 50}} src={logo} align="right"/>
+                </Grid>
+                <Grid item xs={1} md={1}></Grid>
+              </Grid>              
             </Toolbar>
           </AppBar>
           <Card style={{backgroundColor: "#00a758", height: window.innerHeight - 80}}>
@@ -62,42 +72,25 @@ function App({formik}) {
                         onChange={formik.handleChange}
                         value={formik.values.name}
                       />
-                      {/* <TextField 
-                        fullWidth 
-                        label="Jenis Kelamin" 
-                        variant="outlined" 
-                        width="100%" 
-                        name="gender"
-                        helperText=" "
-                        onChange={formik.handleChange}
-                        value={formik.values.gender}
-                      /> */}
-                      <Select
-                        fullWidth
-                        labelId="gender-select"
-                        id="gender-select"
-                        name="gender-select"
-                        
-                        value={formik.values.gender}
-                        label="Nama" 
-                        onChange={(event) => {
-                          formik.setFieldValue("gender", event.target.value);
-                        }}
-                      >
-                        <MenuItem value={"L"}>Laki - laki</MenuItem>
-                        <MenuItem value={"P"}>Perempuan</MenuItem>
-                      </Select>  
-                      <FormHelperText> </FormHelperText>                    
-                      <TextField 
-                        fullWidth 
-                        label="Tanggal Lahir" 
-                        variant="outlined" 
-                        width="100%" 
-                        name="birthDate"
-                        helperText=" "
-                        onChange={formik.handleChange}
-                        value={formik.values.birthDate}
-                      />
+                      <FormControl fullWidth>
+                        <InputLabel id="select-label">Gender</InputLabel>
+                        <Select
+                          fullWidth
+                          labelId="select-label"
+                          id="gender-select"
+                          name="gender-select"
+                          align="left"
+                          value={formik.values.gender}
+                          label="Gender" 
+                          onChange={(event) => {
+                            formik.setFieldValue("gender", event.target.value);
+                          }}
+                        >
+                          <MenuItem value={"L"}>Laki - laki</MenuItem>
+                          <MenuItem value={"P"}>Perempuan</MenuItem>
+                        </Select>  
+                        <FormHelperText> </FormHelperText>                    
+                      </FormControl>
                       <TextField 
                         fullWidth 
                         label="Domisili" 
@@ -120,6 +113,25 @@ function App({formik}) {
                         helperText=" "
                         value={formik.values.language}
                       /> 
+                      <FormControl fullWidth>
+                        <InputLabel id="select-label">Presenter Gender</InputLabel>
+                        <Select
+                          fullWidth
+                          labelId="gender-presenter"
+                          id="gender-presenter"
+                          name="gender-presenter"                        
+                          value={formik.values.presenterGender}
+                          label="Presenter Gender" 
+                          align="left"
+                          onChange={(event) => {
+                            formik.setFieldValue("presenterGender", event.target.value);
+                          }}
+                        >
+                          <MenuItem value={"L"}>Laki - laki</MenuItem>
+                          <MenuItem value={"P"}>Perempuan</MenuItem>  
+                        </Select>  
+                        <FormHelperText> </FormHelperText>                    
+                      </FormControl>
                       <Stack spacing={2}>
                         <Button onClick={capture} variant="contained" endIcon={<CameraAlt />}>
                           Take Photo
