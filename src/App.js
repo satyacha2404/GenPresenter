@@ -30,10 +30,20 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function App({formik}) {
   const webcamRef = React.useRef(null);
+  const [cameraFlag, setCameraFlag] = React.useState(true);
+  const [videoFlag, setvideoFlag] = React.useState(true);
   
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     formik.setFieldValue("picture", imageSrc.split(',')[1]);
+    setCameraFlag(false);
+  }, [webcamRef]);
+
+  const recapture = React.useCallback(() => {
+    formik.setFieldValue("picture", "");
+    formik.setFieldValue("video", "");
+    setCameraFlag(true);
+    setvideoFlag(true);
   }, [webcamRef]);
   
   return (
@@ -133,8 +143,11 @@ function App({formik}) {
                         <FormHelperText> </FormHelperText>                    
                       </FormControl>
                       <Stack spacing={2}>
-                        <Button onClick={capture} variant="contained" endIcon={<CameraAlt />}>
-                          Take Photo
+                        <Button onClick={cameraFlag ? capture: recapture} variant="contained" endIcon={<CameraAlt />}>
+                          {cameraFlag ? 
+                            <div>Take Picture</div> : 
+                            <div>Retake Picture</div>
+                          }
                         </Button>
                       </Stack>                    
                     </Item>
@@ -157,7 +170,11 @@ function App({formik}) {
                               height="470"
                             />                    
                         }
-                        <Button type='submit' variant="contained" endIcon={<VideoLibraryIcon />}>
+                        <Button 
+                          type='submit' 
+                          variant="contained" 
+                          endIcon={<VideoLibraryIcon />}
+                        >
                           Generate Video
                         </Button>
                       </Stack>                    
