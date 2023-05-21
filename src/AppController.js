@@ -4,7 +4,9 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 
 function AppController() {
-  
+
+  const [loadingFLag, setLoadingPage] = React.useState(false);
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -17,6 +19,7 @@ function AppController() {
       presenterGender: ""
     },
     onSubmit: (values) => {
+      setLoadingPage(true);
       var url = 'http://localhost:8000/api/generate-video';
       var body = JSON.stringify(values);      
 
@@ -26,18 +29,21 @@ function AppController() {
         'Content-Type': 'application/json',
       }})
       .then(function (response){
-        console.log(response.data)
-        formik.setFieldValue("video", response.data.responseBody.urlVideo)
+        console.log(response.data);
+        formik.setFieldValue("video", response.data.responseBody.urlVideo);
+        setLoadingPage(false);
       })
       .catch(error => {
-          console.error(error.message);
-      });      
+        console.error(error.message);
+        setLoadingPage(false);
+        });      
     },
   });
 
 
   return <App 
     formik = {formik}
+    loadingFLag = { loadingFLag }
   />
 }
 

@@ -18,7 +18,10 @@ import { Select } from '@mui/material';
 import { MenuItem } from '@mui/material';
 import { FormHelperText }  from '@mui/material';
 import logo from "./assets/Manulife-Logo.jpg";
+import gologo from "./assets/logo.png";
 import { FormControl } from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -28,7 +31,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function App({formik}) {
+function App({formik, loadingFLag}) {
   const webcamRef = React.useRef(null);
   const [cameraFlag, setCameraFlag] = React.useState(true);
   const [videoFlag, setvideoFlag] = React.useState(true);
@@ -49,14 +52,25 @@ function App({formik}) {
   return (
     <form onSubmit={formik.handleSubmit}>
       <div> 
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loadingFLag}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
         <Box sx={{ flexGrow: 11 }}>
           <AppBar position="static">
             <Toolbar style={{backgroundColor: "#00a758", fontSize: 40, height: 80, fontWeight: 'bold'}}>
               <Grid container spacing={10}>
                 <Grid item xs={1} md={1}></Grid>
-                <Grid item xs={4} md={4}>Go Presenter</Grid>
-                <Grid item xs={2} md={2}></Grid>
                 <Grid item xs={4} md={4}>
+                  <div style={{height: 65}}></div>
+                  <img style={{height: 100}} src={gologo} align="left"/>
+                </Grid>
+                <Grid item xs={2} md={2}></Grid>
+                <Grid item xs={4} md={4} >
+                  <div style={{height: 80}}></div>
                   <img style={{height: 50}} src={logo} align="right"/>
                 </Grid>
                 <Grid item xs={1} md={1}></Grid>
@@ -68,9 +82,9 @@ function App({formik}) {
               <Box sx={{ m: 7 }} /> 
               <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={10}>
-                  <Grid item xs={2} md={2}>
+                  <Grid item xs={1} md={1}>
                   </Grid>
-                  <Grid item xs={3} md={3}>
+                  <Grid item xs={4} md={4}>
                     <Item style={{padding: 50, borderRadius: 50}}>
                       <TextField 
                         fullWidth 
